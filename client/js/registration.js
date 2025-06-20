@@ -33,7 +33,8 @@ document.getElementById('register-form').addEventListener('submit', async functi
             message.textContent = data.message || "Помилка реєстрації.";
         }
 
-    } catch (err) {
+    } 
+    catch (err) {
         message.textContent = "Сервер недоступний.";
     }
 });

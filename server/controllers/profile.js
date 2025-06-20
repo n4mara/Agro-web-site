@@ -39,20 +39,20 @@ exports.getAvatar = (req, res) => {
   });
 };
 
-exports.getName = (req,res)=>{
-    const userId=req.params.id;
-    db.get('SELECT name FROM users WHERE id = ?', [userId], (err, row) => {
+exports.getName = (req, res) => {
+  const userId = req.params.id;
+  db.get('SELECT name FROM users WHERE id = ?', [userId], (err, row) => {
     if (err) {
       console.error(err.message);
-      return res.status(500).send('Помилка сервера');
+      return res.status(500).json({ message: 'Помилка сервера' });
     }
 
-    if (!row || !row.avatar) {
-      return res.status(404).send('Зображення не знайдено');
+    if (!row) {
+      return res.status(404).json({ message: 'Користувача не знайдено' });
     }
 
-    //res.set('Content-Type', 'image/jpeg');
-    res.send(row.name);
+    res.json({ name: row.name });
   });
+};
 
-}
+

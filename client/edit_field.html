@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Редагувати поле</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding:20px; background:#f5f5f5; }
+    .form-container {
+      max-width: 500px; margin:auto; background:#fff; padding:20px;
+      border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.05);
+    }
+    .form-container h2 { color:#ff6f61; margin-top:0; }
+    .form-group { margin-bottom:15px; }
+    .form-group label { display:block; margin-bottom:5px; color:#333; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;
+      box-sizing:border-box;
+    }
+    .form-group button {
+      background:#ff6f61; color:#fff; border:none; padding:12px 20px;
+      border-radius:6px; cursor:pointer; transition:background 0.3s;
+    }
+    .form-group button:hover { background:#e65c50; }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Редагувати поле</h2>
+    <form id="editFieldForm">
+      <div class="form-group">
+        <label for="name">Назва поля</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="area">Площа (га)</label>
+        <input type="number" id="area" name="area" step="0.01" required />
+      </div>
+      <div class="form-group">
+        <label for="crop_type">Тип культури</label>
+        <input type="text" id="crop_type" name="crop_type" />
+      </div>
+      <div class="form-group">
+        <label for="soil_type">Тип ґрунту</label>
+        <select id="soil_type" name="soil_type">
+          <option value="">-- Виберіть тип ґрунту --</option>
+          <option value="суглинок">Суглинок</option>
+          <option value="піщаний">Піщаний</option>
+          <option value="глинистий">Глинистий</option>
+          <option value="торф'яний">Торф'яний</option>
+          <option value="каштановий">Каштановий</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="location">Місцезнаходження</label>
+        <textarea id="location" name="location" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit">Зберегти зміни</button>
+      </div>
+      <div id="message"></div>
+    </form>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const fieldId = params.get('id');
+    const form = document.getElementById('editFieldForm');
+    const msg = document.getElementById('message');
+
+    // 1. Завантажити дані поля
+    fetch(`/api/fields/${fieldId}`, { credentials: 'include' })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(({ field }) => {
+        form.name.value = field.name;
+        form.area.value = field.area;
+        form.crop_type.value = field.crop_type;
+        form.soil_type.value = field.soil_type;
+        form.location.value = field.location;
+      })
+      .catch(err => {
+        msg.textContent = 'Не вдалося завантажити поле: ' + err.message;
+      });
+
+    // 2. Обробка сабміту — оновлення
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const payload = {
+        name: form.name.value.trim(),
+        area: parseFloat(form.area.value),
+        crop_type: form.crop_type.value.trim(),
+        soil_type: form.soil_type.value,
+        location: form.location.value.trim()
+      };
+      try {
+        const res = await fetch(`/api/fields/${fieldId}`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || res.statusText);
+        msg.textContent = 'Зміни успішно збережено!';
+        setTimeout(() => window.location.href = '/profile', 1000);
+      } catch (err) {
+        msg.textContent = 'Помилка при збереженні: ' + err.message;
+      }
+    });
+  });
+  </script>
+
+</body>
+</html>
