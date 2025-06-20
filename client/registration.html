@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agro IoT — Вхід</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/registration.css">
+  <script src="js/footer.js"></script>
+  <script src="js/header.js"></script>
+  <script src="js/registration.js"></script>
+</head>
+<body>
+  <custom-header></custom-header>
+
+  <div class="register-container">
+    <h2>Реєстрація</h2>
+    <form id="register-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" required>
+        <label for="confirm">Повторіть пароль:</label>
+        <input type="password" id="confirm" required>
+        <button type="submit">Зареєструватися</button>
+        <div class="message" id="message"></div>
+    </form>
+</div>
+
+  <custom-footer></custom-footer>
+
+</body>
+</html>

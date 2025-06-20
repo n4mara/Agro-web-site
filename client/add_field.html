@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Додати аграрне поле</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #2a7f62;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #2a7f62;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #24664e;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Додати аграрне поле</h1>
+
+  <form id="addFieldForm">
+    <label for="name">Назва поля</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="area">Площа (га)</label>
+    <input type="number" id="area" name="area" step="0.01" min="0" required />
+
+    <label for="crop_type">Тип культури</label>
+    <input type="text" id="crop_type" name="crop_type" />
+
+    <label for="soil_type">Тип ґрунту</label>
+    <select id="soil_type" name="soil_type">
+      <option value="">-- Виберіть тип ґрунту --</option>
+      <option value="суглинок">Суглинок</option>
+      <option value="піщаний">Піщаний</option>
+      <option value="глинистий">Глинистий</option>
+      <option value="торф'яний">Торф'яний</option>
+      <option value="каштановий">Каштановий</option>
+    </select>
+
+    <label for="location">Місцезнаходження</label>
+    <textarea id="location" name="location" rows="3" placeholder="Опишіть місцезнаходження поля"></textarea>
+
+    <button type="submit">Додати поле</button>
+  </form>
+
+  <script>
+    document.getElementById('addFieldForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = {
+        name: form.name.value.trim(),
+        area: parseFloat(form.area.value),
+        crop_type: form.crop_type.value.trim(),
+        soil_type: form.soil_type.value,
+        location: form.location.value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/fields/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert('Поле успішно додано!');
+          form.reset();
+        } else {
+          alert('Помилка: ' + (data.message || 'Не вдалося додати поле'));
+        }
+      } catch (error) {
+        alert('Помилка мережі або сервера');
+      }
+    });
+  </script>
+
+</body>
+</html>

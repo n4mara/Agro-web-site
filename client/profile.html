@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agro IoT — Профіль</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+   .profile-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.profile-info img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #ff6f61;
+}
+
+.profile-info button {
+  margin-left: auto;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-info button:hover {
+  background-color: #e65c50;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar nav ul li a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a.active,
+.sidebar nav ul li a:hover {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.content {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.content section {
+  display: none;
+}
+
+.content section.active {
+  display: block;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.content h2 {
+  margin-top: 0;
+  color: #ff6f61;
+}
+
+/* Уніфіковані стилі форми */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.form-group button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+  background-color: #e65c50;
+}
+
+.list-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+  </style>
+</head>
+<body>
+
+  <custom-header></custom-header>
+
+  <div class="profile-info">
+  <h2 id="profile-name">Завантаження...</h2>
+  <img id="profile-avatar" src="images/default-avatar.png" alt="Фото профілю">
+  <button id="logout-button">Вийти з акаунта</button>
+</div>
+
+<!-- Основний контейнер -->
+<div class="main-container">
+  <!-- Сайдбар -->
+  <div class="sidebar">
+    <nav>
+      <ul>
+        <li><a id="menu-settings" class="active" data-section="settings">Налаштування</a></li>
+        <li><a id="menu-fields" data-section="fields">Поля</a></li>
+        <li><a id="menu-add-field" data-section="addField">Додати поле</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Контент -->
+  <div class="content">
+    <!-- 1. Налаштування -->
+    <section id="settings" class="active">
+      <h2>Налаштування профілю</h2>
+      <form id="avatarForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="avatarInput">Оновити аватар:</label>
+          <input type="file" id="avatarInput" name="avatar" accept="image/*">
+        </div>
+        <button type="submit">Завантажити</button>
+      </form>
+      <div id="avatarMessage"></div>
+    </section>
+
+    <!-- 2. Перелік полів -->
+    <section id="fields">
+      <h2>Ваші поля</h2>
+      <div id="fieldsContainer">
+        <p>Завантаження даних...</p>
+      </div>
+    </section>
+
+    <!-- 3. Додати поле -->
+    <section id="addField">
+      <h2>Додати нове поле</h2>
+      <form id="addFieldForm">
+        <div class="form-group">
+          <label for="name">Назва поля</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="area">Площа (га)</label>
+          <input type="number" id="area" name="area" step="0.01" required />
+
+          <label for="crop_type">Тип культури</label>
+          <input type="text" id="crop_type" name="crop_type" />
+
+          <label for="soil_type">Тип ґрунту</label>
+          <select id="soil_type" name="soil_type">
+            <option value="">-- Виберіть тип ґрунту --</option>
+            <option value="суглинок">Суглинок</option>
+            <option value="піщаний">Піщаний</option>
+            <option value="глинистий">Глинистий</option>
+            <option value="торф'яний">Торф'яний</option>
+            <option value="каштановий">Каштановий</option>
+          </select>
+
+          <label for="location">Місцезнаходження</label>
+          <textarea id="location" name="location" rows="3"></textarea>
+        </div>
+        <button type="submit">Додати поле</button>
+      </form>
+      <div id="fieldMessage"></div>
+    </section>
+  </div>
+</div>
+
+  <custom-footer></custom-footer>
+  <script src="js/profile.js"></script>
+</body>
+</html>

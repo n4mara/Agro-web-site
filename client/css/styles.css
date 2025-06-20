@@ -1,0 +1,101 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.site-header {
+  background: #2a7f62;
+  color: #fff;
+  padding: 1rem 0;
+}
+.site-header .logo {
+  display: inline-block;
+  font-size: 1.5rem;
+}
+.main-nav {
+  float: right;
+}
+.main-nav .nav-link {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+  padding: 0.2rem 0.5rem;
+}
+.main-nav .nav-link.active,
+.main-nav .nav-link:hover {
+  background: #225f4d;
+  border-radius: 4px;
+}
+
+.banner {
+  background: url('../images/banner.jpg') center/cover no-repeat;
+  color: #fff;
+  padding: 4rem 0;
+  text-align: center;
+}
+.banner h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.features {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+.feature {
+  flex: 1;
+  margin: 0 1rem;
+  padding: 1rem;
+  background: #f4f4f4;
+  border-radius: 8px;
+  text-align: center;
+}
+
+
+.site-footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.input-field {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.btn {
+  background-color: #2a7f62;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #225f4d;
+}
+#message {
+  margin-top: 1rem;
+  color: red;
+}
